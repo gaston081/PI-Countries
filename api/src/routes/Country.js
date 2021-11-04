@@ -1,34 +1,114 @@
 const { Router } = require('express');
+const { Sequelize, Op } = require('sequelize')
 const { country, activity, db } = require('../db')
 
 
 const router = Router();
 
 
-router.get("/", async (req, res, next) => {
-    let { name } = req.query
+router.get("/", async (req, res, next) => { // busqueda query por pais con actividades
+    let { name, order } = req.query
+    // me tiene que llegar con la incial en mayusculas. Ver esto!!
+    //  let name = query[0].replace(query[0], query[0].toUpperCase());
+    // console.log(name)
+    if (name) {
+        try {
+            let foundCountry = await country.findAll({
 
-    try {
-        let foundcountry = await country.findAll({
-            limit: 3,
-            where: {
-                // name: {
-                //     [ iLike ]: '%'+ name 
-                // }
-            }
-        });
-        res.json(foundcountry);
-    } catch (error) {
-        res.status(404)
-        next(error)
+                where: {
+                    name: { [Op.like]: name + '%' },
+                },
+                include: activity
+            });
+            foundCountry
+                ? res.json(foundCountry)
+                : res.send('El pais ingresado no existe')
+        } catch (error) {
+            res.status(404)
+            next(error)
+        }
     }
+
+    else if (order) {
+
+        if (order === "ASC") {
+            try {
+                let ascend = await country.findAll({
+                    order: [['name', 'ASC']]
+
+                })
+                res.json(ascend)
+            }
+            catch (error) {
+                res.status(404)
+                next(error)
+            }
+        }
+    }
+
+    if (order === "DESC") {
+        try {
+            let descend = await country.findAll({
+                order: [['name', 'DESC']]
+            })
+            res.json(descend)
+        } catch (error) {
+            res.status(404)
+            next(error)
+        }
+    }
+
+
+
+    if (order === 'popAsc') {
+        try {
+            let byPop = await country.findAll({
+                order: [['population', 'ASC']]
+            })
+            res.json(byPop)
+        } catch (error) {
+            res.status(404)
+            next(error)
+        }
+    }
+
+
+    if (order === 'popDesc') {
+        try {
+            let byPop = await country.findAll({
+                order: [['population', 'DESC']]
+            })
+            res.json(byPop)
+        } catch (error) {
+            res.status(404)
+            next(error)
+        }
+    }
+
+
+
+    else {
+        try {
+            let Allcountries = await country.findAll({
+                include: activity
+            })
+            res.json(Allcountries)
+        } catch (error) {
+            next(error)
+        }
+    }
+
+
 
 
 });
 
+
+
+
 router.get("/:idPais", async (req, res, next) => {
     try {
-        let { idPais } = req.params
+        let { idPais } = req.params // tienen que ser las iniciales en may "ARG"
 
         const countryDetails = await country.findOne({
             where: {
@@ -43,32 +123,6 @@ router.get("/:idPais", async (req, res, next) => {
         next(error);
     }
 })
-
-
-// GET /countries?name="...":
-// Obtener los países que coincidan con el nombre pasado como query parameter (No necesariamente tiene que ser una matcheo exacto)
-// Si no existe ningún país mostrar un mensaje adecuado
-
-
-// GET /countries/{idPais}:
-// Obtener el detalle de un país en particular
-// Debe traer solo los datos pedidos en la ruta de detalle de país
-// Incluir los datos de las actividades turísticas correspondientes
-// Ruta de detalle de país: debe contener
-
-//  Los campos mostrados en la ruta principal para cada país (imagen de la bandera, nombre, código de país de 3 letras y continente)
-//  Código de país de 3 letras (id)
-//  Capital
-//  Subregión
-//  Área (Mostrarla en km2 o millones de km2)
-//  Población
-//  Actividades turísticas con toda su información asociada
-
-
-//  GET /countries?name="...":
-// Obtener los países que coincidan con el nombre pasado como query parameter (No necesariamente tiene que ser una matcheo exacto)
-// Si no existe ningún país mostrar un mensaje adecuado
-
 
 
 module.exports = router;
