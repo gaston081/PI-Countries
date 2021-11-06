@@ -4,12 +4,9 @@ import { useSelector } from 'react-redux'
 import Navbar from "../NavBar/Navbar";
 
 
-export default function ActivityForm() {
-
+export default function ActivityForm() { // manejo de errores en form
     let countries = useSelector(state => state.allCountries)
-    let countryNamesAndId = countries.map(country => { return { name: country.name, id: country.id } })
-    
-    //ver forumlarios controlados    
+    var countryNamesAndId = countries.map(country => { return { name: country.name, id: country.id } })
 
 
     const [input, setInput] = useState({
@@ -17,29 +14,67 @@ export default function ActivityForm() {
         name: "",
         dificult: "",
         duration: "",
-        season: ""
-
+        season: "",
+        inputCountries: []
     })
 
     function handleChange(e) {
+        if (e.target.name !== "countries") {
+            setInput({
+                ...input,
+                [e.target.name]: e.target.value
+            })
+        } else {
+            if (e.target.value !== "Seleccione" && !input.inputCountries.includes(e.target.value)) {
+                setInput({
+                    ...input,
+                    inputCountries: [...input.inputCountries, e.target.value]
+                }
+                )
+            }
+        }
+    }
+    //----------------------------------------------------------------------------------
 
+    function handleClick(e) {
         setInput({
             ...input,
-            [e.target.name]: e.target.value
+            inputCountries: input.inputCountries.filter(e => e.target.value)
         })
     }
 
-    function onSubmit(e) {
-        e.preventDefault();
-        let countryId = countryNamesAndId.find(c => c.name === input.country)
-        let inputCopy = Object.assign({}, input);
-        inputCopy.idCountry = countryId.id
-        
-        axios.post('http://localhost:3001/api/activity/post/', inputCopy)
-        .then(alert("Nueva actividad creada"))
+    function nameToId(name) {
+        let finded = countryNamesAndId.find(c => c.name === name);
+        return finded.id
 
     }
 
+
+
+    function onSubmit(e) {
+        e.preventDefault();
+        let countriesMap = input.inputCountries.map((count, index) => {// mapeo todos los paises ingresados en el array del state y 
+            return {                                          // genero un obj x cada uno con sus actividades                                        
+                idCountry: nameToId(input.inputCountries[index]),
+                name: input.name,
+                dificult: input.dificult,
+                duration: input.duration,
+                season: input.season
+
+            }
+
+        })
+        console.log(countriesMap)
+        try {
+            countriesMap.map((elem) => {
+                axios.post('http://localhost:3001/api/activity/post/', elem);
+
+            })
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
 
     return (
 
@@ -69,10 +104,10 @@ export default function ActivityForm() {
                 <select name="duration" onChange={handleChange}>
                     <option value='Seleccione' >Seleccione</option>
                     <option value='1 Hora' >1 hora</option>
-                    <option value='2 Hora' >2 horas</option>
-                    <option value='3 Hora' >3 horas</option>
-                    <option value='4 Hora' >4 horas</option>
-                    <option value='5 Hora' >5 horas</option>
+                    <option value='2 Horas' >2 horas</option>
+                    <option value='3 Horas' >3 horas</option>
+                    <option value='4 Horas' >4 horas</option>
+                    <option value='5 Horas' >5 horas</option>
                 </select>
 
                 <br />
@@ -88,9 +123,9 @@ export default function ActivityForm() {
                 <br />
 
                 <label>Pais</label>
-                <select name="country" type="text" onChange={handleChange}>
+                <select multiple name="countries" type="text" onChange={handleChange}>
                     <option value='Seleccione' >Seleccione</option>
-                    {countryNamesAndId.map(country => {
+                    {countryNamesAndId.sort((a, b) => a.name > b.name).map(country => {
                         return <option key={country.id} value={country.name} >
                             {country.name}</option>
                     })}
@@ -99,6 +134,18 @@ export default function ActivityForm() {
                 <br />
                 <button type='submit'>AGREGAR</button>
             </form>
+
+
+            <div>
+
+                {input.inputCountries ?
+                    input.inputCountries.map((elem, index) =>
+                        <p key={index}>{elem}</p>)
+                    : <p>Agregue un pais</p>}
+
+            </div>
         </div>
+
+
     )
 }

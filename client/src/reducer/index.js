@@ -1,7 +1,9 @@
 
 const initialState = {
     allCountries: [],
-    ordered: []
+    ordered: [],
+    countryId: {},
+    activities:[]
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -10,17 +12,34 @@ export default function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 allCountries: action.data,
-                
-           };
-       
-        case "ORDERED":
-            return{
-                ...state,
-                ordered: action.data, 
+
             };
-        
-        
-           default: return state;
+
+        case "ORDERED":
+            return {
+                ...state,
+                ordered: action.data,
+            };
+
+        case "COUNTRY_ID":
+            return {
+                ...state,
+                countryId: action.data,
+            }
+
+        case "BY_CONTINENT":
+            return {
+                ...state,
+                ordered: state.allCountries.filter((c) => c.continent === action.data)
+            }
+
+        case "ACTIVITIES":
+            return {
+                ...state,
+                activities: action.data,
+            }
+
+        default: return state;
     }
 
 }

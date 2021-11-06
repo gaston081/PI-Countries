@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import Card from "../Card/Card";
+import { useHistory } from "react-router";
 
 
 export default function SearchBar() {
@@ -9,23 +9,33 @@ export default function SearchBar() {
 
     let [input, setInput] = useState("")
 
+    let history = useHistory();
+
+
     function handleChange(e) {
         setInput(e.target.value);
     }
 
+///////////////////////////////////
     function handleSubmit(e) {
         e.preventDefault();
-        let countryDetail= countries.find(input)
+        let filter = countries.filter(elem => elem === e.target.value);
+        if (filter === []) {
+            alert("El pais ingresado no existe")
+        } else {
+            let id = countries.find((c) => c.name.toLowerCase() === input.toLowerCase()).id;
+            history.push("/CountryDetails/" + id)
+        }
+/////////////////////////////////////////
 
     }
-
-
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
                 <label>Buscar Pais</label>
-                <input placeholder='Ingrese el Pais' onChange={handleChange} value ={input}></input>
+                <input placeholder='Ingrese el Pais'
+                    onChange={handleChange} value={input}></input>
                 <button>Buscar</button>
             </form>
         </div>

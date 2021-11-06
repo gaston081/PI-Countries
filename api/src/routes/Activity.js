@@ -19,9 +19,9 @@ router.post('/post', async (req, res, next) => {
         const ActivityFound = await activity.findOne({
             where: { name: name }
         })
-        
+
         res.json(await relatedCountry.addActivity(ActivityFound))
-        
+
 
     } catch (error) {
         console.log(error)
@@ -31,17 +31,16 @@ router.post('/post', async (req, res, next) => {
 
 })
 
+router.get('/', async (req, res, next) => {
 
-// POST /activity:
-// Recibe los datos recolectados desde el formulario controlado de la ruta de creación de actividad turística por body
-// Crea una actividad turística en la base de datos
-
-// ID
-// Nombre
-// Dificultad (Entre 1 y 5)
-// Duración
-// Temporada (Verano, Otoño, Invierno o Primavera)
-
-
+    try {
+        let AllActivities = await activity.findAll({
+            include: country
+        })
+        res.json(AllActivities)
+    } catch (error) {
+        next(error)
+    }
+})
 
 module.exports = router;

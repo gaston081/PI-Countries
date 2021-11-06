@@ -8,30 +8,29 @@ import ActivityForm from './components/ActivityForm/ActivityForm';
 import { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { getCountries } from './actions'
+import Countrydetails from './components/CountryDetails/CountryDetails';
 
 
 function App() {
 
   const dispatch = useDispatch();
-  useEffect(() => dispatch(getCountries()), []) //buscar solucion al warning
+  useEffect(() => dispatch(getCountries()), [dispatch]) 
   
-   // useEffect = (() => { setElementsToShow(allCountriesFromState) }, [handleChange])
-
-    // useEffect = (() => { setElementsToShow(orderedFromState) }, [handleChange])
-
-
+  
 
 
   return (
 
     <React.Fragment>
       
+      
       < Route exact path='/' component={Landing} />
       < Route path = '/Home' component={Navbar}/>
       < Route exact path='/Home' component={Home} />
-      < Route exact path='/NavBar' component={Navbar} />
+      < Route exact path='/Navbar' component={Navbar} />
       < Route exact path= "/ActivityForm" component={ActivityForm}/>
-    
+      < Route path= '/CountryDetails/:id' component={Countrydetails}/>
+
     </React.Fragment>
   )
 }

@@ -108,17 +108,18 @@ router.get("/", async (req, res, next) => { // busqueda query por pais con activ
 
 router.get("/:idPais", async (req, res, next) => {
     try {
-        let { idPais } = req.params // tienen que ser las iniciales en may "ARG"
+        let { idPais } = req.params
 
-        const countryDetails = await country.findOne({
+        let countryDetails = await country.findOne({
             where: {
                 id: idPais
             },
             include: activity
-        });
-        countryDetails
+        })
+        console.log(countryDetails)
+        countryDetails 
             ? res.json(countryDetails)
-            : res.send("No se encontraron actividades para el Pais solicitado.");
+            : res.send("No se encontraron datos.");
     } catch (error) {
         next(error);
     }
