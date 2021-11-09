@@ -1,64 +1,70 @@
 import React, { useEffect, useState } from 'react';
 import Cards from '../Cards/Cards';
 import { useDispatch, useSelector } from 'react-redux';
-import { getActivities, getByOrder, getCountryByContinent } from '../../actions';
+import { getActivities, getActivitiesByName, getByOrder, getCountries, getCountryByContinent } from '../../actions';
 
-
+import './Home.css'
 
 
 export default function Home() {
 
-    let dispatch = useDispatch();
+    const dispatch = useDispatch();
 
-    var allCountriesFromState = useSelector(state => state.allCountries);
+    const activities = useSelector(state => state.activities)
 
-    let orderedFromState = useSelector(state => state.ordered);
+    const allCountriesFromState = useSelector(state => state.allCountries);
 
-    let [elementsToShow, setElementsToShow] = useState(allCountriesFromState)
+    const orderedFromState = useSelector(state => state.ordered);
 
-    let [control, setControl] = useState('default')
+    const [elementsToDisplay, setElementsToDisplay] = useState(allCountriesFromState)
 
-    let orders = {
-       
-        "ASC": "ASC",
-        "DESC": "DESC",
-        "popAsc": "popAsc",
-        "popDesc": "popDesc"
+    const [control, setControl] = useState("default")
 
-    }
 
-    let continents = {
-        
-        "asia": "Asia",
-        "Europe": "Europe",
-        "Africa": "Africa",
-        "South America": "South America",
-        "North America": "North America",
-        "Antartica": "Antartica"
-    }
+
+    useEffect(() => dispatch(getActivities()), [dispatch])
 
     function handleChange(e) {
 
-        if (e.target.value !== 'default') {
-
-            if (orders[e.target.value]) {
-                dispatch(getByOrder(e.target.value));
-            }
-            else {
-                dispatch(getCountryByContinent(e.target.value));
-            }
+        if (e.target.value === 'default') {
+            dispatch(getCountries())
+            setControl(e.target.value)
         }
-        setControl(e.target.value)
+
+        if (e.target.name === 'continent') {
+            dispatch(getCountryByContinent(e.target.value));
+            setControl(e.target.value)
+        }
+
+        if (e.target.name === 'activities') {
+            if (e.target.value === "default") {
+                setControl("default")
+            } else {
+                setControl(e.target.value)
+                dispatch(getActivitiesByName(e.target.value))
+            }
+
+        }
+
+        if (e.target.name === 'order') {
+            dispatch(getByOrder(e.target.value));
+            setControl(e.target.value)
+        }
     }
 
 
-getActivities()
-
-
     useEffect(() => {
-        if (control !== 'default') setElementsToShow(orderedFromState)
-        else setElementsToShow(allCountriesFromState)
+        if (control !== 'default') setElementsToDisplay(orderedFromState)
+        else setElementsToDisplay(allCountriesFromState)
     }, [control, orderedFromState, allCountriesFromState])
+
+
+    let activitiesMap = activities.map(item => {
+        return item.name
+    });
+    var activitiesMapArr = activitiesMap.filter((item, index) => {
+        return activitiesMap.indexOf(item) === index;
+    })
 
 
 
@@ -66,47 +72,55 @@ getActivities()
 
     return (
 
-        <div>
-            <label>Busqueda por Alfabeto/Poblacion </label>
-            <select onChange={handleChange} >
-                <option value="default">ORDENAR</option>
-                <option value="ASC"  >Ascendente A-Z</option>
-                <option value="DESC">Descendente Z-A</option>
-                <option value="popDesc">Mayor Poblacion</option>
-                <option value="popAsc">Menor Poblacion</option>
-            </select>
+        <div class='Home'>
+            <div class='filter-container'>
+                <div>
+                    <div>
+                        <label>Busqueda por Alfabeto/Poblacion </label>
+                    </div>
+                    <div className='select'>
+                        <select name="order" onChange={handleChange} >
+                            <option value="default">ORDENAR</option>
+                            <option value="ASC"  >Ascendente A-Z</option>
+                            <option value="DESC">Descendente Z-A</option>
+                            <option value="popDesc">Mayor Poblacion</option>
+                            <option value="popAsc">Menor Poblacion</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label>Busqueda por Continente </label><br />
+                    <div className='select'>
+                    <select name="continent" onChange={handleChange} >
+                        <option value="default">ORDENAR</option>
+                        <option value="Asia"> Asia</option>
+                        <option value="Europe">Europa</option>
+                        <option value="Africa">Africa</option>
+                        <option value="South America">America del Sur</option>
+                        <option value="North America">America del Norte</option>
+                    </select>
+                    </div>
+                </div>
 
 
-            <div>
-                <label>Busqueda por Continente </label>
-                <select onChange={handleChange} >
-                    <option value="default">ORDENAR</option>
-                    <option value="Asia"> Asia</option>
-                    <option value="Europe">Europa</option>
-                    <option value="Africa">Africa</option>
-                    <option value="South America">America del Sur</option>
-                    <option value="North America">America del Norte</option>America del Norte
-                    <option value="Antartica">Antartida</option>
-                </select>
+                <div>
+                    <label>Busqueda por Actividades </label><br />
+                    <div className='select'>
+                    <select name='activities' onChange={handleChange} >
+                        <option value="default">ORDENAR</option>
+                        {activitiesMapArr.map((elem, i) => <option key={i} value={elem}>{elem}</option>)}
+                    </select>
+                    </div>
+                </div>
+                <br />
             </div>
 
-
+            
             <div>
-                <label>Busqueda por Actividades </label>
-                <select onChange={handleChange} >
-                    <option value="default">ORDENAR</option>
-                   { <option value="Asia"> Asia</option> }
-                </select>
+                <Cards elementsToDisplay={elementsToDisplay} orderedFromState={orderedFromState} />
             </div>
 
-
-
-
-
-
-            {/*-------------------------------------------------------------------------------- */}
-            <Cards elementsToShow={elementsToShow} />
         </div>
     )
-
 }

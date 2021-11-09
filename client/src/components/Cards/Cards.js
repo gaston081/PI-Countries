@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import Card from '../Card/Card'
 import Pagination from '../Pagination/Pagination';
+import './Cards.css'
 
 
-
-export default function Cards({elementsToShow}) {
+export default function Cards({ elementsToDisplay }) {
 
 
     let countriesInPage = 10;
@@ -12,9 +12,16 @@ export default function Cards({elementsToShow}) {
 
     useEffect(() => { setPage(1) }, [])
 
+    let currentPage
     let indexLastPage = page * countriesInPage;
     let indexFirstPage = indexLastPage - countriesInPage;
-    let currentPage = elementsToShow.slice(indexFirstPage, indexLastPage);
+
+    if (elementsToDisplay.length > 10) {
+        currentPage = elementsToDisplay.slice(indexFirstPage, indexLastPage);
+    }
+    else currentPage = elementsToDisplay
+
+
 
     function Paginate(e, num) {
         e.preventDefault();
@@ -23,21 +30,21 @@ export default function Cards({elementsToShow}) {
 
 
     return (
-        <div>
+        <div >
 
-            <div>
-                {currentPage.map((elem) => <Card
+            <div class='container-cards'>
+                {currentPage.map((elem) =><div><Card
                     key={elem.id}
                     name={elem.name}
                     image={elem.image}
                     continent={elem.continent}
                     id={elem.id}
-                />)}
+                /></div>)}
             </div>
 
 
             <div>
-                <Pagination countriesInPage={countriesInPage} totalElements={elementsToShow.length}
+                <Pagination countriesInPage={countriesInPage} totalElements={elementsToDisplay.length}
                     paginate={Paginate} />
             </div>
 

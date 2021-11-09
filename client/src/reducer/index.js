@@ -3,7 +3,8 @@ const initialState = {
     allCountries: [],
     ordered: [],
     countryId: {},
-    activities:[]
+    activities: []
+    
 };
 
 export default function rootReducer(state = initialState, action) {
@@ -14,7 +15,6 @@ export default function rootReducer(state = initialState, action) {
                 allCountries: action.data,
 
             };
-
         case "ORDERED":
             return {
                 ...state,
@@ -33,10 +33,16 @@ export default function rootReducer(state = initialState, action) {
                 ordered: state.allCountries.filter((c) => c.continent === action.data)
             }
 
+        case "ACTIVITIES_BY_NAME":
+            return {
+                ...state,
+                ordered: action.data[0].countries
+            }
+
         case "ACTIVITIES":
             return {
                 ...state,
-                activities: action.data,
+                activities: action.data
             }
 
         default: return state;

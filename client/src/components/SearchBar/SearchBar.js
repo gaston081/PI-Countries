@@ -1,42 +1,52 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router";
-
+import './SearchBar.css'
 
 export default function SearchBar() {
 
-    let countries = useSelector(state => state.allCountries)
+    const countries = useSelector(state => state.allCountries)
 
-    let [input, setInput] = useState("")
+    const [input, setInput] = useState("")
 
-    let history = useHistory();
+    const history = useHistory();
 
 
     function handleChange(e) {
         setInput(e.target.value);
     }
+    console.log(countries)
+    ///////////////////////////////////
 
-///////////////////////////////////
+
     function handleSubmit(e) {
         e.preventDefault();
-        let filter = countries.filter(elem => elem === e.target.value);
-        if (filter === []) {
-            alert("El pais ingresado no existe")
-        } else {
-            let id = countries.find((c) => c.name.toLowerCase() === input.toLowerCase()).id;
-            history.push("/CountryDetails/" + id)
-        }
-/////////////////////////////////////////
+        // let filter = countries.filter(elem => elem === e.target.value);
+        // if (filter === "") {
+        //     alert("El pais ingresado no existe")
+        //     console.log(countries)
+        // } else {
+        let id = countries.find((c) => c.name.toLowerCase() === input.toLowerCase()).id;
+        history.push("/CountryDetails/" + id)
+        // }
+
+
+        /////////////////////////////////////////
 
     }
 
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <label>Buscar Pais</label>
-                <input placeholder='Ingrese el Pais'
-                    onChange={handleChange} value={input}></input>
-                <button>Buscar</button>
+                <div class='search'>
+                    <label className='label'>Buscar Pais</label>
+                    </div>
+                    <div id='search'>
+                        <input className='input' placeholder='Ingrese el Pais'
+                            onChange={handleChange} value={input}></input>
+                        <button className='boton'>Buscar</button>
+                    
+                </div>
             </form>
         </div>
 

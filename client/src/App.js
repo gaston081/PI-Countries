@@ -1,6 +1,6 @@
 import './App.css';
 import React from 'react'
-import Navbar from './components/NavBar/Navbar';
+import NavBar from './components/NavBar/NavBar';
 import { Route } from 'react-router-dom';
 import Landing from './components/Landing/Landing';
 import Home from './components/Home/Home';
@@ -14,22 +14,23 @@ import Countrydetails from './components/CountryDetails/CountryDetails';
 function App() {
 
   const dispatch = useDispatch();
-  useEffect(() => dispatch(getCountries()), [dispatch]) 
+  useEffect(() => dispatch(getCountries()), [dispatch])
   
-  
+
 
 
   return (
 
     <React.Fragment>
-      
+
       
       < Route exact path='/' component={Landing} />
-      < Route path = '/Home' component={Navbar}/>
+      < Route path='/Home' component={NavBar} /> 
       < Route exact path='/Home' component={Home} />
-      < Route exact path='/Navbar' component={Navbar} />
-      < Route exact path= "/ActivityForm" component={ActivityForm}/>
-      < Route path= '/CountryDetails/:id' component={Countrydetails}/>
+      < Route exact path='/NavBar' component={NavBar} />
+      < Route exact path="/ActivityForm" component={ActivityForm} />
+      < Route path='/CountryDetails/:id' component={Countrydetails} />
+
 
     </React.Fragment>
   )

@@ -31,16 +31,40 @@ router.post('/post', async (req, res, next) => {
 
 })
 
-router.get('/', async (req, res, next) => {
 
-    try {
-        let AllActivities = await activity.findAll({
-            include: country
-        })
-        res.json(AllActivities)
-    } catch (error) {
-        next(error)
+
+
+router.get("/", async (req, res, next) => { // find actividad x nombre y paises
+    let { name } = req.query
+
+    if (name) {
+        try {
+            let foundActivity = await activity.findAll({
+
+                where: { name: name },
+                include: country
+            });
+            foundActivity
+                ? res.json(foundActivity)
+                : res.send('La actividad ingresada no existe')
+        } catch (error) {
+            res.status(404)
+            next(error)
+        }
+    }
+    else {
+        try {
+            let AllActivities = await activity.findAll({
+                include: country
+            })
+            AllActivities ?
+                res.json(AllActivities)
+                : res.send('Sin datos')
+        } catch (error) {
+            next(error)
+        }
     }
 })
+
 
 module.exports = router;
