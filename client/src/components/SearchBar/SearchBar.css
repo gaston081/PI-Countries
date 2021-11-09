@@ -12,5 +12,50 @@
 }
 
 .label {
-    justify-content: center
+    justify-content: center;
+    margin-right: 55px;
+    font-size: 18px;
+    font-family: 'Quicksand', sans-serif;
 }
+
+.btn-submit{
+  border: 1px solid #2e518b; 
+  padding: 6.2px; 
+  background-color: #14489b; 
+  color: #fff4f4;
+  text-decoration: none;  
+  font-family: 'Quicksand', sans-serif; 
+  border-radius: 50px; 
+  }
+
+  .btn-submit:hover{
+    border: solid black 1.3px;
+    background-color: rgba(80, 79, 74, 0.877)
+
+  }
+
+.input{
+    
+  display: inline-block;
+  width:150px;
+  cursor:pointer;
+  padding: 7px 10px px;
+  height: 24px;
+  outline: 0; 
+  border: 0;
+  background: #f0f0f0;
+  color: #7b7b7b;
+  font-size: 18px;
+  color: #999;
+  font-family: 'Quicksand', sans-serif;
+  border:2px solid rgba(0,0,0,0.2);
+  border-radius: 12px;
+  position: relative;
+ /*  transition: width 2s ease 0.5s;  */
+    
+}
+ /* .input:hover{
+  width: 200px;
+  
+
+}  */

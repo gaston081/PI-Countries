@@ -15,24 +15,18 @@ export default function SearchBar() {
     function handleChange(e) {
         setInput(e.target.value);
     }
-    console.log(countries)
-    ///////////////////////////////////
-
+    
 
     function handleSubmit(e) {
         e.preventDefault();
-        // let filter = countries.filter(elem => elem === e.target.value);
-        // if (filter === "") {
-        //     alert("El pais ingresado no existe")
-        //     console.log(countries)
-        // } else {
+        let filter = countries.filter(elem => elem.name.toLowerCase() === input.toLowerCase());
+        if (filter.length === 0) {
+            alert('El pais ingresado no existe')
+            } else {
         let id = countries.find((c) => c.name.toLowerCase() === input.toLowerCase()).id;
         history.push("/CountryDetails/" + id)
-        // }
-
-
-        /////////////////////////////////////////
-
+        }
+        console.log(filter)
     }
 
     return (
@@ -44,7 +38,7 @@ export default function SearchBar() {
                     <div id='search'>
                         <input className='input' placeholder='Ingrese el Pais'
                             onChange={handleChange} value={input}></input>
-                        <button className='boton'>Buscar</button>
+                        <button type= "submit" className='btn-submit'>Buscar</button>
                     
                 </div>
             </form>

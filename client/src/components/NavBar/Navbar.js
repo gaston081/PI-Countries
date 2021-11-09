@@ -12,8 +12,8 @@ export default function Navbar() {
                     <div id='country'>
                         <NavLink style={{ textDecoration: 'none', color: 'black' }} to='/Home'> Countries App</NavLink>
                     </div>
-                    <div>
-                        <button id='button-nav' onClick={getActivitiesByName}> <NavLink style={{ textDecoration: 'none', color: 'black' }}
+                    <div id= 'style-padding'>
+                        <button id='button-nav' onClick={getActivitiesByName}> <NavLink style={{ textDecoration: 'none', color: 'white'}}
                             to="/ActivityForm">Agregar Actividad</NavLink></button>
                     </div>
                     <div id='searchbar'>

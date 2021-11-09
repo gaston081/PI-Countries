@@ -79,7 +79,7 @@ export default function Home() {
                         <label>Busqueda por Alfabeto/Poblacion </label>
                     </div>
                     <div className='select'>
-                        <select name="order" onChange={handleChange} >
+                        <select className='select-style' name="order" onChange={handleChange} >
                             <option value="default">ORDENAR</option>
                             <option value="ASC"  >Ascendente A-Z</option>
                             <option value="DESC">Descendente Z-A</option>
@@ -92,7 +92,7 @@ export default function Home() {
                 <div>
                     <label>Busqueda por Continente </label><br />
                     <div className='select'>
-                    <select name="continent" onChange={handleChange} >
+                    <select className='select-style'  name="continent" onChange={handleChange} >
                         <option value="default">ORDENAR</option>
                         <option value="Asia"> Asia</option>
                         <option value="Europe">Europa</option>
@@ -107,7 +107,7 @@ export default function Home() {
                 <div>
                     <label>Busqueda por Actividades </label><br />
                     <div className='select'>
-                    <select name='activities' onChange={handleChange} >
+                    <select className='select-style' name='activities' onChange={handleChange} >
                         <option value="default">ORDENAR</option>
                         {activitiesMapArr.map((elem, i) => <option key={i} value={elem}>{elem}</option>)}
                     </select>

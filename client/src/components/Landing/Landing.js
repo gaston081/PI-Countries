@@ -1,14 +1,17 @@
 
 import { Link } from 'react-router-dom'
+import './Landing.css'
+
+export default function Landing() {
 
 
-export default function Landing(){
-    
-    
-    return(
+    return (
+
         <div>
-            <Link to = "/Home"> Ingresar a ver paises </Link>
+            <div  className='container-landing' >
+             <Link to="/Home"><button className='main-botton'> Ingresar al Sitio</button> </Link>
+            </div>
         </div>
     )
 
-}  
+}

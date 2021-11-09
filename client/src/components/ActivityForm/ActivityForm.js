@@ -6,9 +6,11 @@ import NavBar from '../NavBar/NavBar';
 import './ActivityForm.css';
 
 export default function ActivityForm () {
-  // manejo de errores en form
-  let countries = useSelector (state => state.allCountries);
-  var countryNamesAndId = countries
+    
+  const dispatch = useDispatch ();
+  const countries = useSelector (state => state.allCountries);
+  
+  const countryNamesAndId = countries
     .map (country => {
       return {
         name: country.name,
@@ -17,7 +19,7 @@ export default function ActivityForm () {
     })
     .sort ((a, b) => (a.name > b.name ? 1 : -1));
 
-  let dispatch = useDispatch ();
+ 
 
   const [input, setInput] = useState ({
     idCountry: '',
@@ -27,7 +29,15 @@ export default function ActivityForm () {
     season: '',
     inputCountries: [],
   });
+////---------------------------------------------------
+const [errors, setErrors] = useState ({
+  name: '',
+  dificult: '',
+  duration: '',
+  season: '',
+});
 
+///-----------------------------------------------
   function handleChange (e) {
     if (e.target.name !== 'countries') {
       setInput ({
@@ -37,31 +47,55 @@ export default function ActivityForm () {
     } else {
       if (
         e.target.value !== 'Seleccione' &&
-        !input.inputCountries.includes (e.target.value)
+        !input.inputCountries.includes(e.target.value)
       ) {
         setInput ({
           ...input,
           inputCountries: [...input.inputCountries, e.target.value],
         });
-      }
-      // setErrors(validate({
-      //     ...input,
-      //     [e.target.name]: e.target.value
-      // }));
+      }//---------------------------------------
+      setErrors(validate({
+          ...input,
+          [e.target.name]: e.target.value
+      }));
     }
-  }
+  }//---------------------------------------------
   //----------------------------------------------------------------------------------
-  const [errors, setErrors] = useState ({
-    name: '',
-    dificult: '',
-    duration: '',
-    season: '',
-  });
+
+
+  function validate(input) {
+    let errors = {};
+    if (!input.name|| input !== 'string' || input === '') {
+      errors.name = 'La actividad es necesaria';
+    } 
+    else if (input !== 'string' || input === '') {
+      errors.username = 'Ingrese una actividad valida';
+    } 
+    if (!input.dificult){
+      errors.dificult = 'Ingrese un nivel de dificultad';  
+    }
+    if (!input.duration){
+      errors.duration = 'Ingrese el tiempo de duracion de la actividad'; 
+    }
+    if (!input.season){
+      errors.season = 'Ingrese la temporada'; 
+    }
+        return errors;
+
+}
+
+
+
 
   // //---------------------------------------------------------------------------------------
   function nameToId (name) {
     let finded = countryNamesAndId.find (c => c.name === name);
     return finded.id;
+  }
+
+  function handleClickButton(e){
+    setInput({...input, 
+        inputCountries: input.inputCountries.filter((country) => country !== e.target.name)})
   }
 
   function onSubmit (e) {
@@ -76,6 +110,7 @@ export default function ActivityForm () {
         duration: input.duration,
         season: input.season,
       };
+
     });
 
     try {
@@ -105,15 +140,15 @@ export default function ActivityForm () {
           <div className='act'>
             <label>Actividad</label>
           </div>
-          <div className='act'>
-            <input name="name" type="text" onChange={handleChange} />
+          <div >
+            <input style={{height: 20, cursor: 'default' }} className='content-select' name="name" type="text" onChange={handleChange} />
           </div>
 
           <div className='act'>
             <label>Dificultad</label>
           </div>
           <div className='act'>
-            <select name="dificult" type="text" onChange={handleChange}>
+            <select name="dificult" className='content-select' type="text" onChange={handleChange}>
               <option value="Seleccione">Seleccione</option>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -127,7 +162,7 @@ export default function ActivityForm () {
             <label>Duracion</label>
           </div>
           <div className='act'>
-            <select name="duration" onChange={handleChange}>
+            <select name="duration" className='content-select' onChange={handleChange}>
               <option value="Seleccione">Seleccione</option>
               <option value="1 Hora">1 hora</option>
               <option value="2 Horas">2 horas</option>
@@ -141,7 +176,7 @@ export default function ActivityForm () {
             <label>Temporada</label>
           </div>
           <div className='act'>
-            <select name="season" onChange={handleChange}>
+            <select name="season" className='content-select' onChange={handleChange}>
               <option value="Seleccione">Seleccione</option>
               <option value="Primavera">Primavera</option>
               <option value="Verano">Verano</option>
@@ -159,12 +194,10 @@ export default function ActivityForm () {
               multiple
               name="countries"
               type="text"
+              className='content-select-multi'
               onChange={handleChange}
             >
-            {/* <option value="Seleccione">Seleccione</option> */}
-              {countryNamesAndId
-                .sort ((a, b) => a.name - b.name)
-                .map (country => {
+              {countryNamesAndId.map (country => {
                   return (
                     <option key={country.id} value={country.name}>
                       {country.name}
@@ -175,20 +208,24 @@ export default function ActivityForm () {
           </div>
 
           <div className='act'>
-            <button type="submit">AGREGAR</button>
+            <button className='btn-submit' type="submit">AGREGAR</button>
           </div>
         </form>
 
       </div>
 
-      <div className='act'>
-        {input.inputCountries
-          ? input.inputCountries.map ((elem, index) => (
-              <p key={index}>{elem}</p>
+      <div className='button-switch-box' >
+       
+        {
+         input.inputCountries.map ((elem, index) => (
+             <button className='btn-activity' key={index} type='submit' name={elem} value={elem} 
+             onClick={handleClickButton}>{elem}</button>
             ))
-          : <p>Agregue un pais</p>}
+        }
+        
       </div>
 
     </div>
   );
 }
+

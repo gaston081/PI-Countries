@@ -1,23 +1,30 @@
+.pagination{
+  display: flex;
+  flex-direction: row;
+
+  justify-content:center
+}
 
 .button {
-  background-color: #4CAF50; 
-  border: solid black 2px;
-  border-radius: 20%;
+  
+  border: solid black 0.5px;
+  cursor:pointer;
   color: white;
-  padding: 15px 32px;
+  padding: 4px 6px;
   text-align: center;
-  display: inline-block;
+  background-color: #14489b; 
   font-size: 16px;
-justify-items: space-between;
-transition: 500ms;
+  transition: 8ms;
 
 }
 
-.button:hover{
-    background-color: blueviolet;
-    transition: 200ms;
+/* .button:hover{
+    background-color: rgba(79, 77, 82, 0.493);
+    transition: 10ms;
     font-size: 18px;
-    border-radius: 50%;
+} */
 
+.display{
+  padding: 25px 5px 5px 5px;
 
 }

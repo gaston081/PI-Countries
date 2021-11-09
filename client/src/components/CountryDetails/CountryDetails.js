@@ -1,56 +1,89 @@
-import React, { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useParams } from 'react-router'
-import { getCountryById } from '../../actions'
-import Navbar from '../NavBar/Navbar'
+import React, {useEffect} from 'react';
+import {useDispatch, useSelector} from 'react-redux';
+import {useParams} from 'react-router';
+import {getCountryById} from '../../actions';
+import NavBar from '../NavBar/NavBar';
+import './CountryDetails.css';
 
+export default function Countrydetails () {
+  let {id} = useParams ();
+  let dispatch = useDispatch ();
 
-export default function Countrydetails() {
+  useEffect (
+    () => {
+      dispatch (getCountryById (id));
+    },
+    [dispatch, id]
+  );
 
-    let { id } = useParams()
-    let dispatch = useDispatch()
+  let country = useSelector (state => state.countryId);
 
-    useEffect(() => {
-        dispatch(getCountryById(id))
-    }, [dispatch, id])
+  return (
+    <div>
+      <NavBar />
 
-
-    let country = useSelector(state => state.countryId)
-    
-
-    return (
-        <div>
-            <Navbar />
-
-
-            <div>
-                <img src={country.image} alt='Imagen no enocontrada' />
-                <p>Nombre</p>
-                <p>{country.name}</p>
-                <p>Codigo de pais</p>
-                <p>{country.id}</p>
-                <p>Continente</p>
-                <p>{country.continent}</p>
-                <p>Area</p>
-                <p>{country.area} KM²</p>
-                <p>Poblacion</p>
-                <p>{country.population} Habitantes</p>
-                <div>
-                    <p>Actividades</p>
-                    <div>{country.activities
-                        ? country.activities.map(act => <div>
-                            <p>Actividad</p>
-                            <p>{act.name}</p>
-                            <p>Nivel de Dificultad</p>
-                             <p>{act.dificult}</p> 
-                            <p>Duracion</p>
-                            <p>{act.duration}</p>
-                            <p>Temporada</p>
-                     <p>{act.season}</p>
-                        </div>)
-                        : "Aun no se han ingresado actividades para este pais"}</div>
+      <div className="container-details">
+        <div className="content">
+          <div className="box1">
+            <img id="flag" src={country.image} alt="Imagen no enocontrada" />
+            <div class="detail-content">   
+                <div className='detail'>
+                  <p>Pais</p>
+                  <p>{country.name}</p>
                 </div>
-            </div>
+                <div className='detail'>
+                  <p>Capital</p>
+                  <p>{country.capital}</p>
+                </div>
+                <div className='detail'>
+                  <p>Codigo de pais</p>
+                  <p>{country.id}</p>
+                </div>
+                <div className='detail'>
+                  <p>Continente</p>
+                  <p>{country.continent}</p>
+                </div>
+                <div>
+                  <p className='detail'>Area</p>
+                  <p>{country.area} KM²</p>
+                </div>
+                <div>
+                  <p className='detail'>Poblacion</p>
+                  <p>{country.population}</p>
+                </div>
+             </div>
+          </div>
         </div>
-    )
+        <div className='container-activity-cards'>
+
+          <h2 id='title-act'>Actividades</h2>
+
+          <div >
+            {country.activities
+              ? country.activities.map (act => (
+                  <div id="activity-card">
+                    <div className='detail'>
+                      <p>Actividad</p>
+                      <p>{act.name}</p>
+                    </div>
+                    <div className='detail'> 
+                      <p>Nivel de Dificultad</p>
+                      <p>{act.dificult}</p>
+                    </div>
+                    <div className='detail'>
+                      <p>Duracion</p>
+                      <p>{act.duration}</p>
+                    </div>
+                    <div className='detail'>
+                      <p>Temporada</p>
+                      <p>{act.season}</p>
+                    </div>
+                  </div>
+                ))
+              : 'Aun no se han ingresado actividades para este pais'}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }

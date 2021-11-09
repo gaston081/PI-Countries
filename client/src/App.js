@@ -11,6 +11,7 @@ import { getCountries } from './actions'
 import Countrydetails from './components/CountryDetails/CountryDetails';
 
 
+
 function App() {
 
   const dispatch = useDispatch();
@@ -24,13 +25,13 @@ function App() {
     <React.Fragment>
 
       
-      < Route exact path='/' component={Landing} />
+      
       < Route path='/Home' component={NavBar} /> 
       < Route exact path='/Home' component={Home} />
       < Route exact path='/NavBar' component={NavBar} />
       < Route exact path="/ActivityForm" component={ActivityForm} />
       < Route path='/CountryDetails/:id' component={Countrydetails} />
-
+      < Route exact path='/' component={Landing} />
 
     </React.Fragment>
   )
