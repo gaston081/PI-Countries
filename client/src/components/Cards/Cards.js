@@ -32,9 +32,8 @@ export default function Cards({ elementsToDisplay }) {
     return (
         <div >
 
-            <div class='container-cards'>
-                {currentPage.map((elem) =><div><Card
-                    key={elem.id}
+            <div className='container-cards'>
+                {currentPage.map((elem) =><div key={elem.id}><Card
                     name={elem.name}
                     image={elem.image}
                     continent={elem.continent}

@@ -23,6 +23,3 @@ export default function Card({ name, image, continent, id }) {
 }
 
 
-// Imagen de la bandera
-// Nombre
-// Continente

@@ -32,7 +32,7 @@ export default function SearchBar() {
     return (
         <div>
             <form onSubmit={handleSubmit}>
-                <div class='search'>
+                <div className='searchbar'>
                     <label className='label'>Buscar Pais</label>
                     </div>
                     <div id='search'>

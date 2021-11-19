@@ -28,6 +28,7 @@ async function apiConnect() {
     const response = await axios.get('https://restcountries.com/v3/all');
     const result = response.data;
     let infoDb = result.map((country) => {
+      
       return {
 
         id: country.cca3,

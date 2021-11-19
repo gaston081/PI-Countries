@@ -6,12 +6,12 @@ import NavBar from '../NavBar/NavBar';
 import './CountryDetails.css';
 
 export default function Countrydetails () {
+ 
   let {id} = useParams ();
   let dispatch = useDispatch ();
 
   useEffect (
-    () => {
-      dispatch (getCountryById (id));
+    () => { dispatch (getCountryById (id));
     },
     [dispatch, id]
   );
@@ -25,8 +25,8 @@ export default function Countrydetails () {
       <div className="container-details">
         <div className="content">
           <div className="box1">
-            <img id="flag" src={country.image} alt="Imagen no enocontrada" />
-            <div class="detail-content">   
+            <img id="flag" src={country.image} alt="Imagen no encontrada" />
+            <div className="detail-content">   
                 <div className='detail'>
                   <p>Pais</p>
                   <p>{country.name}</p>
@@ -61,7 +61,7 @@ export default function Countrydetails () {
           <div >
             {country.activities
               ? country.activities.map (act => (
-                  <div id="activity-card">
+                  <div id="activity-card" key={act.name} >
                     <div className='detail'>
                       <p>Actividad</p>
                       <p>{act.name}</p>

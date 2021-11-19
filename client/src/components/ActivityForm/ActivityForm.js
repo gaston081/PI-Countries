@@ -1,15 +1,16 @@
 import axios from 'axios';
 import {useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
-import {getActivities} from '../../actions';
+import { useSelector} from 'react-redux';
 import NavBar from '../NavBar/NavBar';
 import './ActivityForm.css';
 
+
 export default function ActivityForm () {
     
-  const dispatch = useDispatch ();
   const countries = useSelector (state => state.allCountries);
-  
+  const VerifyActivity= useSelector(state=> state.countryId)
+  console.log(VerifyActivity)
+
   const countryNamesAndId = countries
     .map (country => {
       return {
@@ -19,7 +20,6 @@ export default function ActivityForm () {
     })
     .sort ((a, b) => (a.name > b.name ? 1 : -1));
 
- 
 
   const [input, setInput] = useState ({
     idCountry: '',
@@ -29,15 +29,7 @@ export default function ActivityForm () {
     season: '',
     inputCountries: [],
   });
-////---------------------------------------------------
-const [errors, setErrors] = useState ({
-  name: '',
-  dificult: '',
-  duration: '',
-  season: '',
-});
 
-///-----------------------------------------------
   function handleChange (e) {
     if (e.target.name !== 'countries') {
       setInput ({
@@ -47,58 +39,31 @@ const [errors, setErrors] = useState ({
     } else {
       if (
         e.target.value !== 'Seleccione' &&
-        !input.inputCountries.includes(e.target.value)
+        !input.inputCountries.includes(e.target.value) &&  input.inputCountries.length < 3
       ) {
         setInput ({
           ...input,
           inputCountries: [...input.inputCountries, e.target.value],
         });
-      }//---------------------------------------
-      setErrors(validate({
-          ...input,
-          [e.target.name]: e.target.value
-      }));
-    }
-  }//---------------------------------------------
-  //----------------------------------------------------------------------------------
-
-
-  function validate(input) {
-    let errors = {};
-    if (!input.name|| input !== 'string' || input === '') {
-      errors.name = 'La actividad es necesaria';
+      } else alert('Puede agregar actividades a 3 paises en simultaneo como maximo')
     } 
-    else if (input !== 'string' || input === '') {
-      errors.username = 'Ingrese una actividad valida';
-    } 
-    if (!input.dificult){
-      errors.dificult = 'Ingrese un nivel de dificultad';  
-    }
-    if (!input.duration){
-      errors.duration = 'Ingrese el tiempo de duracion de la actividad'; 
-    }
-    if (!input.season){
-      errors.season = 'Ingrese la temporada'; 
-    }
-        return errors;
-
-}
+  }
 
 
-
-
-  // //---------------------------------------------------------------------------------------
   function nameToId (name) {
     let finded = countryNamesAndId.find (c => c.name === name);
     return finded.id;
   }
 
-  function handleClickButton(e){
-    setInput({...input, 
-        inputCountries: input.inputCountries.filter((country) => country !== e.target.name)})
-  }
 
-  function onSubmit (e) {
+  function handleClickButton(e){
+   setInput({...input, 
+        inputCountries: input.inputCountries.filter((country) => country !== e.target.name)})
+    } 
+  
+
+
+   function onSubmit (e) {
     e.preventDefault ();
     let countriesMap = input.inputCountries.map ((count, index) => {
       // mapeo todos los paises ingresados en el array del state y
@@ -110,21 +75,31 @@ const [errors, setErrors] = useState ({
         duration: input.duration,
         season: input.season,
       };
-
     });
 
     try {
-      countriesMap.map (elem => {
-        axios.post ('http://localhost:3001/api/activity/post/', elem);
+      countriesMap.forEach (elem => {
+         axios.post ('http://localhost:3001/api/activity/post/', elem);
       });
     } catch (error) {
       console.log (error);
     }
+   
+    setInput({
+      idCountry: undefined || '',
+      name: '',
+      dificult: '',
+      duration: '',
+      season: '',
+      inputCountries: [],
+    })
+    
+    alert('Nueva actividad creada')
   }
 
-  dispatch (getActivities ());
+  
   return (
-    <div>
+    <div className='background'>
       <div>
         <NavBar />
       </div>
@@ -132,23 +107,19 @@ const [errors, setErrors] = useState ({
           Agregar nueva actividad
         </div>
       <div className="activity-container">
-
-       
-
             <form onSubmit={onSubmit}>
-
           <div className='act'>
             <label>Actividad</label>
           </div>
           <div >
-            <input style={{height: 20, cursor: 'default' }} className='content-select' name="name" type="text" onChange={handleChange} />
+            <input style={{height: 20, cursor: 'default' }} className='content-select'
+             name="name"  value={input.name} type="text" onChange={handleChange} />
           </div>
-
           <div className='act'>
             <label>Dificultad</label>
           </div>
           <div className='act'>
-            <select name="dificult" className='content-select' type="text" onChange={handleChange}>
+            <select name="dificult" value={input.dificult} className='content-select' type="text" onChange={handleChange}>
               <option value="Seleccione">Seleccione</option>
               <option value="1">1</option>
               <option value="2">2</option>
@@ -157,12 +128,11 @@ const [errors, setErrors] = useState ({
               <option value="5">5</option>
             </select>
           </div>
-
           <div className='act'>
             <label>Duracion</label>
           </div>
           <div className='act'>
-            <select name="duration" className='content-select' onChange={handleChange}>
+            <select name="duration" value={input.duration} className= 'content-select' onChange={handleChange}>
               <option value="Seleccione">Seleccione</option>
               <option value="1 Hora">1 hora</option>
               <option value="2 Horas">2 horas</option>
@@ -171,12 +141,11 @@ const [errors, setErrors] = useState ({
               <option value="5 Horas">5 horas</option>
             </select>
           </div>
-
           <div className='act'>
             <label>Temporada</label>
           </div>
           <div className='act'>
-            <select name="season" className='content-select' onChange={handleChange}>
+            <select name="season" value={input.season} className='content-select' onChange={handleChange}>
               <option value="Seleccione">Seleccione</option>
               <option value="Primavera">Primavera</option>
               <option value="Verano">Verano</option>
@@ -184,12 +153,10 @@ const [errors, setErrors] = useState ({
               <option value="Invierno">Invierno</option>
             </select>
           </div>
-
           <div className='act'>
             <label>Pais</label>
           </div>
           <div className='act'>
-
             <select 
               multiple
               name="countries"
@@ -206,14 +173,11 @@ const [errors, setErrors] = useState ({
                 })}
             </select>
           </div>
-
           <div className='act'>
             <button className='btn-submit' type="submit">AGREGAR</button>
           </div>
         </form>
-
       </div>
-
       <div className='button-switch-box' >
        
         {
@@ -224,7 +188,6 @@ const [errors, setErrors] = useState ({
         }
         
       </div>
-
     </div>
   );
 }

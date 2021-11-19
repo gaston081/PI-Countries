@@ -1,16 +1,14 @@
 const { Router } = require('express');
-const { Sequelize, Op } = require('sequelize')
-const { country, activity, db } = require('../db')
+const { Op } = require('sequelize')
+const { country, activity } = require('../db')
 
 
 const router = Router();
 
 
-router.get("/", async (req, res, next) => { // busqueda query por pais con actividades
+router.get("/", async (req, res, next) => { 
     let { name, order } = req.query
-    // me tiene que llegar con la incial en mayusculas. Ver esto!!
-    //  let name = query[0].replace(query[0], query[0].toUpperCase());
-    // console.log(name)
+    
     if (name) {
         try {
             let foundCountry = await country.findAll({
@@ -116,7 +114,7 @@ router.get("/:idPais", async (req, res, next) => {
             },
             include: activity
         })
-        console.log(countryDetails)
+        //console.log(countryDetails)
         countryDetails 
             ? res.json(countryDetails)
             : res.send("No se encontraron datos.");

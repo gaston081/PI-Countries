@@ -1,12 +1,10 @@
 
 .container-landing{
-      background: url('../../images/fondo\ PI.jpg') ; 
-      position:fixed;
+      background: url('../../images/fondo\ PI.jpg'); 
+      position:absolute;
       min-width: 100%;
       min-height: 100%;
       background-color: blue;
-
-
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -14,6 +12,7 @@
       gap: 1rem;
       
 }
+
 .main-botton{
     border: 2px solid #030507; 
     padding: 6.2px; 
@@ -21,17 +20,31 @@
     cursor:pointer; 
     color: #f8f4ff;
     text-decoration: none;  
+    font-style:italic ;
     font-family: 'Quicksand', sans-serif; 
     border-radius: 15px; 
-    font-size: 22px;
-    width: 180px;
-    height: 100px;
-    transition: width 1s;
+    font-size: 20px;
+    width: 240px;
+    height: 80px;
+    transition: width 0.4s;
+    margin-bottom: 170px;
+    box-shadow: 20px 20px 12px rgba(0,0,0,0.9);
 }
 
 .main-botton:hover {
     
-    width: 200px;
+    
+    width: 245px;
 }
-     /* transform: width 2s, height 2s; */
-  
+    
+.landing-title{
+    margin-right: 800px;
+    margin-bottom:100px;
+    font-size: 70px;
+    font-style:italic ;
+    font-family: 'Quicksand', sans-serif; 
+    font-weight: 600;
+    color: rgba(248, 248, 248, 0.856);
+    text-shadow: 7px 0 rgb(37, 36, 36), 0 1px black, 4px 0 black, 0 -1px black;
+    
+}  

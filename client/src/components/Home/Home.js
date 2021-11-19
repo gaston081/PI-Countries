@@ -30,12 +30,10 @@ export default function Home() {
             dispatch(getCountries())
             setControl(e.target.value)
         }
-
         if (e.target.name === 'continent') {
             dispatch(getCountryByContinent(e.target.value));
             setControl(e.target.value)
         }
-
         if (e.target.name === 'activities') {
             if (e.target.value === "default") {
                 setControl("default")
@@ -43,15 +41,12 @@ export default function Home() {
                 setControl(e.target.value)
                 dispatch(getActivitiesByName(e.target.value))
             }
-
         }
-
         if (e.target.name === 'order') {
             dispatch(getByOrder(e.target.value));
             setControl(e.target.value)
         }
     }
-
 
     useEffect(() => {
         if (control !== 'default') setElementsToDisplay(orderedFromState)
@@ -62,18 +57,15 @@ export default function Home() {
     let activitiesMap = activities.map(item => {
         return item.name
     });
-    var activitiesMapArr = activitiesMap.filter((item, index) => {
+    let activitiesMapArr = activitiesMap.filter((item, index) => {
         return activitiesMap.indexOf(item) === index;
     })
-
-
-
-
+    
 
     return (
 
-        <div class='Home'>
-            <div class='filter-container'>
+        <div className='Home'>
+            <div className='filter-container'>
                 <div>
                     <div>
                         <label>Busqueda por Alfabeto/Poblacion </label>
@@ -88,37 +80,34 @@ export default function Home() {
                         </select>
                     </div>
                 </div>
-
                 <div>
-                    <label>Busqueda por Continente </label><br />
-                    <div className='select'>
-                    <select className='select-style'  name="continent" onChange={handleChange} >
-                        <option value="default">ORDENAR</option>
-                        <option value="Asia"> Asia</option>
-                        <option value="Europe">Europa</option>
-                        <option value="Africa">Africa</option>
-                        <option value="South America">America del Sur</option>
-                        <option value="North America">America del Norte</option>
-                    </select>
+                    <label>Busqueda por Continente </label>
+                    <div className='select' >
+                        <select className='select-style' name="continent" onChange={handleChange} >
+                            <option value="default">ORDENAR</option>
+                            <option value="Asia"> Asia</option>
+                            <option value="Europe">Europa</option>
+                            <option value="Africa">Africa</option>
+                            <option value="South America">America del Sur</option>
+                            <option value="North America">America del Norte</option>
+                        </select>
                     </div>
                 </div>
-
-
                 <div>
                     <label>Busqueda por Actividades </label><br />
                     <div className='select'>
-                    <select className='select-style' name='activities' onChange={handleChange} >
-                        <option value="default">ORDENAR</option>
-                        {activitiesMapArr.map((elem, i) => <option key={i} value={elem}>{elem}</option>)}
-                    </select>
+                        <select className='select-style' name='activities' onChange={handleChange} >
+                            <option value="default">ORDENAR</option>
+                            {activitiesMapArr.map((elem, i) => <option key={i} value={elem}>{elem}</option>)}
+                        </select>
                     </div>
                 </div>
                 <br />
             </div>
 
-            
+
             <div>
-                <Cards elementsToDisplay={elementsToDisplay} orderedFromState={orderedFromState} />
+                <Cards elementsToDisplay={elementsToDisplay}/>
             </div>
 
         </div>

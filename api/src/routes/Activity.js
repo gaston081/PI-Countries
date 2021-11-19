@@ -1,9 +1,10 @@
 const { Router } = require('express');
 
 const { activity, country } = require('../db');
-const Country = require('../models/Country');
+
 
 const router = Router();
+
 
 router.post('/post', async (req, res, next) => {
     let { idCountry, name, dificult, duration, season } = req.body;
@@ -30,8 +31,6 @@ router.post('/post', async (req, res, next) => {
     }
 
 })
-
-
 
 
 router.get("/", async (req, res, next) => { // find actividad x nombre y paises
