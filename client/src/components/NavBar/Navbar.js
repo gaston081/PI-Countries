@@ -5,7 +5,7 @@ import './NavBar.css'
 
 
 export default function NavBar() {
-    return (
+    return ( 
         <header>
            <nav className='nav'>
                 <div className='flex-container'>
