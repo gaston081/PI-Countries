@@ -15,13 +15,13 @@ export function getByOrder(order) {
     }
 }
 
-export function getCountryById(id) {
+ export function getCountryById(id) {
     return async function (dispatch) {
         let response = await axios.get(`http://localhost:3001/api/country/${id}`)
         dispatch({ type: "COUNTRY_ID", data: response.data })
 
     }
-}
+} 
 
 export function getCountryByContinent(data) {
     return function (dispatch) {
@@ -42,6 +42,5 @@ export function getActivities() {
         dispatch({ type: "ACTIVITIES", data: response.data })
     }
 }
-
 
 

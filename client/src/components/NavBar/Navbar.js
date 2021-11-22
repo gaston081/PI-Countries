@@ -4,7 +4,7 @@ import SearchBar from '../SearchBar/SearchBar'
 import './NavBar.css'
 
 
-export default function Navbar() {
+export default function NavBar() {
     return (
         <header>
             <nav className='nav'>

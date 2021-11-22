@@ -12,7 +12,7 @@ import NavBar from './components/NavBar/NavBar';
 import About from './components/About/About';
 
 
-function App() {
+function App() { 
 
   const dispatch = useDispatch();
   useEffect(() => dispatch(getCountries()), [dispatch])

@@ -27,8 +27,9 @@ export default function SearchBar() {
         history.push("/CountryDetails/" + id)
         }
         console.log(filter)
-    }
+    } 
 
+    
     return (
         <div>
             <form onSubmit={handleSubmit}>

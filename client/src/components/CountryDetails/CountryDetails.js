@@ -14,8 +14,9 @@ export default function Countrydetails () {
     () => { dispatch (getCountryById (id));
     },
     [dispatch, id]
-  );
+  ); 
 
+ 
   let country = useSelector (state => state.countryId);
 
   return (
