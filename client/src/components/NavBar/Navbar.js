@@ -7,7 +7,7 @@ import './NavBar.css'
 export default function NavBar() {
     return (
         <header>
-            <nav className='nav'>
+           <nav className='nav'>
                 <div className='flex-container'>
                     <div id='country'>
                         <NavLink style={{ textDecoration: 'none', color: 'rgb(9, 9, 78)' }} to='/Home'> Countries App</NavLink>
@@ -24,7 +24,7 @@ export default function NavBar() {
                     </div>
 
                 </div>
-            </nav>
+           </nav>
         </header>
     )
 
